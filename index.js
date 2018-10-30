@@ -8,4 +8,4 @@ import {AppRegistry} from 'react-native';
 import GetSteps from './src/Datarepository/GetSteps';
 
 // AppRegistry.registerComponent('GetPolyline', () => GetPolyline);
-AppRegistry.registerComponent('GetSteps', () => GetSteps);
+AppRegistry.registerComponent('DemoMap', () => GetSteps);

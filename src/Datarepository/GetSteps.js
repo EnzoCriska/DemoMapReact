@@ -39,7 +39,9 @@ export default class GetSteps extends React.Component {
         return this.state.steps;
       }
     }
-
+    render(){
+      return(null)
+    }
 
 
 }
