@@ -1,27 +1,31 @@
-import React, {Component} from 'react'
-import GetSteps from './src/Dataripository/GetSteps'
+import React, {Component} from 'react';
+import { Text, View} from 'react-native';
+import MapView from 'react-native-maps';
+import  GetSteps, {list} from './GetSteps';
 export default class GetPolyline extends React.Component{
-    // polylines=[]
+    polyliness=[]
     constructor(props){
         super(props);
-        // console.log("Constructor...");
-        // this.state={
-        //     steps:GetSteps.state.steps,
-        //     region:null
-        // }
-        // console.log("after constructor...");
+        console.log("Constructor...");
+        this.state={
+            steps:0,
+            region:null
+        }
+        console.log("after constructor...");
+        this.polyliness.push();
     }
 
     componentDidMount(){
         console.log("Start did mount...");
-    //    for(let x; x < this.state.steps.length; x++){
-    //        this.polylines.push(PolyUtil.decode(this.state.steps[x]));
-    //        console.log(this.polylines[0]);
-    //    }
-    
+
+        console.log(list);
+        console.log(this.polyliness);
     //    this.setState({
-    //        steps:GetSteps.state.steps,
-    //        region:this.polylines[0]
+    //        steps:1,
+    //        region:{
+    //            latitude:this.polyliness[0].lat,
+    //            longitude:this.polyliness[0].lng
+    //        }
 
     //    })
        
@@ -29,9 +33,10 @@ export default class GetPolyline extends React.Component{
 
     render(){
         return(
-        <view style={{flex:1}}>
+        <View style={{flex:1}}>
+            <Text style={{flex:1}}>Hello this is Poliline</Text>
             {/* <MapView
-                    style={{flex:1}}
+                    style={{flex:7}}
                     initialRegion={this.state.region}
                     zoomEnabled={true}
                     zoomControlEnabled={true}
@@ -41,7 +46,7 @@ export default class GetPolyline extends React.Component{
                         strokeColor={this.state.strokeColor}
                     />
                  </MapView> */}
-        </view>
+        </View>
         );
     }
 
