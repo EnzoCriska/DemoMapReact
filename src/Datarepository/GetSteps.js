@@ -3,14 +3,14 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 export default class GetSteps extends React.Component {
-    polylines = [];
-    steps =[];
+    polylines = "";
+    myObj='';
     constructor(props){
       super(props)
       this.state={
         isLoading:true,
         dataSource:null,
-
+        isProcessing:false,
       }
     }
   
@@ -21,16 +21,19 @@ export default class GetSteps extends React.Component {
       .then((responseJson) => {
         this.setState({
             isLoading:false,
-            dataSource: responseJson.routes
+            dataSource: responseJson.routes,
+            isProcessing: true,
         })
        
       })
       .catch((error)=>{
-        console.log(error)
+        console.log("ERROR " + error)
       });
       
     }
+    
     processData(){
+      var polyline = require("./polyline")
       var legss;
       var stepss
       // console.log(this.state.isLoading + "....")
@@ -41,16 +44,28 @@ export default class GetSteps extends React.Component {
           legss = val.legs; });
           // console.log(legss[0].steps);
         stepss = legss[0].steps;
-        console.log(stepss.length);
-        for (let x = 0; x< stepss.length; x++){
-            this.polylines.push(stepss[x].end_location);
-        }
-        console.log("++++++" + this.polylines.length)
+        var s = 0;
+        var lengths = 0;
+        for(let x = 0; x < stepss.length; x++){
+          var tempArr = polyline.decode(stepss[x].polyline.points);
+          for (let i = 0; i < tempArr.length; i++){
+            var string = tempArr[i][0] + "-" + tempArr[i][1] +";";
+            this.polylines = this.polylines + string;
+            lengths = lengths + string.length;
+          }
+          s = s+ tempArr.length;
+          
+        }  
+        
+        console.log("++++++" + this.polylines.length + "---------" +  s + "------" +lengths)
         // return stepss;
       }
-      this.steps.push(stepss);
-      console.log(this.polylines);
       
+      // console.log(this.polylines)
+      if(this.state.isProcessing){
+        this.props.navigation.navigate('Step_get_polyline', {thamso:this.polylines});
+      }
+      // console.log(this.myObj);
       return this.polylines;
     }
 
@@ -58,7 +73,7 @@ export default class GetSteps extends React.Component {
       this.processData();
       return(
         <View>
-          <Text>Hello</Text>
+          <Text>Hello  </Text>
         </View>
       )
     }
