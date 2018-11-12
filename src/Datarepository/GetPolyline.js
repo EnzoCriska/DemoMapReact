@@ -1,24 +1,18 @@
 import React, {Component} from 'react';
-import { Text, View} from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { Text, View, Image } from 'react-native';
+import MapView, { Marker, Polyline, AnimatedRegion, Animated} from 'react-native-maps';
 import  GetSteps, {list} from './GetSteps';
+import image from '../Media/icon.jpg';
 export default class GetPolyline extends React.Component{
     polys  = [];
     constructor(props){
         super(props);
-        arrayMarker=[
-            {
-                latitude:21,
-                longitude:105
-            }
-        ]
         console.log("Constructor...");
         this.state={
-            region:{
+            region: new AnimatedRegion({
                 latitude:21,
                 longitude:105
-            },
-            markers:arrayMarker
+            }),
         }
         console.log("after constructor...");
         
@@ -50,8 +44,6 @@ export default class GetPolyline extends React.Component{
        for(let i = 0; i < polyliness.length; i++){
            this.polys.push(polyliness[i]); 
        }
-    //    this.polys = polyliness;
-    //    console.log(this.polys)
     }
 
     sleep(milliseconds) {
@@ -68,26 +60,18 @@ export default class GetPolyline extends React.Component{
         for(let x = 0; x < this.polys.length; x++){
             let latitude = this.polys[x].latitude;
             let longitude = this.polys.longitude;
-            arrayMarker.push({
-                latitude: latitude,
-                longitude: longitude
-            });
-            this.setState({markers:arrayMarker});
+            // setTimeout(this.setState({
+            //     region:{
+            //         latitude: this.polys[x].latitude,
+            //         longitude: this.polys[x].longitude,
+            //         latitudeDelta: 0.02,
+            //         longitudeDelta : 0.02,
+            //     }
+            // }), 500)
             
         }
     }
 
-    renderMarker(){
-        markers=[];
-        for(marker of this.state.markers){
-            markers.push(
-                <MapView.Marker 
-                    key={marker.latitude + marker.longitude}
-                    coordinate={marker}/>
-            )
-        }
-        return markers
-    }
 
 
     render(){
@@ -100,7 +84,11 @@ export default class GetPolyline extends React.Component{
         }else{
             return(
                 <View style={{flex:1}}>
-                    {/* <Text style={{flex:1}}>Hello this is Poliline</Text> */}
+                    <Animated
+                        region={this.state.region}
+                        onRegionChange={this.onRegionChange}
+                        />
+                    
                     <MapView
                             onPress={this.onPress.bind(this)}
                             style={{flex:1}}
@@ -114,9 +102,13 @@ export default class GetPolyline extends React.Component{
                                 strokeColor='red'
                                 
                             />
-                            {this.renderMarker()}
-                            
-                         </MapView>
+
+                            <Marker
+                                coordinate={this.state.region}
+                            />
+                          
+                       
+                    </MapView>
                 </View>
                 );
         }
